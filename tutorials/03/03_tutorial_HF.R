@@ -29,13 +29,13 @@ summary(df_not_tidy)
 # (a.) Contingency tables -------
 
 # Load tidy version of data
-# The data is prepared using the data_wraning.R script.
+# The data is prepared using the data_wrangling.R script.
 df <- readRDS("datasets/movies.rds")
 str(df)
 
 # First step, look at data
 View(df)
-class(df$genre)
+class(df$genre) # factors??? 
 levels(df$genre)
 
 # Contingency table 
@@ -45,10 +45,10 @@ table(df$genre, # Genre
 # Subset data, only consider Comedy, Documentary, Drama
 
 # Option 1: 
-# Dataframe subsetting: df[rows, columns]
+# Dataframe subsetting: df[rows, columns] - subsetting the rows
 df_s <- df[df$genre=="Comedy" |
            df$genre=="Drama" |
-           df$genre=="Documentary", ]
+           df$genre=="Documentary", ]  # note comma - more subsetting 
 View(df_s)
 
 # Step by step
@@ -62,7 +62,7 @@ df[df$genre=="Comedy" |
 
 # Option 2: Tidyverse subset
 
-# Install and load tidyverse
+# Install and load tidyverse - IF REQUIRES, WON'T RELOAD IT 
 # Adopted from: https://stackoverflow.com/questions/4090169/elegant-way-to-check-for-missing-packages-and-install-them
 if(!require(tidyverse)){
   install.packages("tidyverse")
@@ -122,12 +122,12 @@ prop.table(table(df_s$genre, # rows
 # Over rows --> Rating conditional on genre
 addmargins(prop.table(table(df_s$genre, 
                             df_s$critics_rating), 
-                      margin = 1)) # over rows
+                      margin = 1)) # over rows (the rows are the conditions here)
 
 # Round
 round(addmargins(prop.table(table(df_s$genre, 
                        df_s$critics_rating), 
-                 margin = 1)), 2)
+                 margin = 1)), 2)   # (2 here is to 2 decimal points)
 
 # Step by step 
 round(0.72413793, 2) # Round to two decimals
@@ -142,7 +142,7 @@ addmargins(prop.table(table(df_s$genre, # rows
                       margin = 2)) # over columns
 63/190 
 
-# Bar plot
+# Bar plot - copied from above 
 barplot(prop.table(table(df_s$genre, 
                          df_s$critics_rating), margin=1),
         xlab="Ranking",
@@ -155,6 +155,8 @@ barplot(prop.table(table(df_s$genre,
                            cex = 0.8, 
                            box.col = "white"))
 
+
+# to save - incl. path-file here 
 png(filename = "tutorials/03/barplot.png",
     width = 600,
     height = 350)
@@ -185,7 +187,9 @@ sprintf("%.20f",1.097e-12)
 # Step 4: P-value
 # Step 5: Conclusion
 
-# A little side note, look at residuals
+# A little side note, look at residuals - CHI-TEST
+
+
 chi <- chisq.test(df_s$genre, 
                   df_s$critics_rating)
 # Returns the Pearson residuals, (observed - expected) / sqrt(expected)

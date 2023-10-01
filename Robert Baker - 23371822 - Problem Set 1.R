@@ -1,4 +1,8 @@
 #####################
+# Robert Baker - 23371822 - Problem Set 1 
+# 29 / 09 / 23
+
+#####################
 # load libraries
 # set wd
 # clear global .envir
@@ -33,6 +37,7 @@ lapply(c(),  pkgTest)
 library(dplyr)
 
 
+#####################
 # Problem 1
 #####################
 
@@ -46,15 +51,21 @@ class(y)
 
 # Finding a 90% confidence interval for the average student IQ 
 
-# First getting the mean & standard error 
+# Getting the mean
 
 mean_y <- mean(y)
 mean_y
 
+# Getting the standard dev.
 sd_y <- sd(y)
 sd_y
 
-standard_error_y <- sd(y)/sqrt(length(y))
+# Getting the Sqr. Root
+sqrt_y <- sqrt(length(y))
+sqrt_y 
+
+# Now the standard error (standard dev / square root)
+standard_error_y <- sd(y)/sqrt_y
 standard_error_y
 
 # Calculating the margin of error for a 90% confidence interval using the 
@@ -68,36 +79,36 @@ upper_90  <- qnorm(0.95 / 2,
                    sd = sd_y)
 
 # print
-message <- paste("Based on the sample data provided in the dataset y,",
-                 "we can say with c. 90% confidence",
+message <- paste("Based on the sample data provided in the vector (y),",
+                 "we can estimate with c. 90% confidence",
                  "that the mean is likely to fall within the range of approximately",
                  round(lower_90), "to", round(upper_90))
 cat(message)
 
 
-# Null hypothesis: average student IQ is not higher than nat. av (μ <= 100)
+# Null hypothesis: average student IQ is not higher than nat. av. (μ <= 100)
 # Alternative hypothesis: average student IQ is higher than nat av. (μ > 100)
 
-# Calculate the z-statistic for the hypothesis test
+# Calculating the z-statistic for the hypothesis test
 z_stat <- (mean_y - 100) / standard_error_y
 
-# Calculate the p-value for the hypothesis test (it's a right-tailed test)
+# Calculating the p-value for the hypothesis test (it's a right-tailed test)
 p_value <- 1 - pnorm(z_stat)
 
-# Display 
+# Displaying 
 z_stat
 p_value
 
-message2 <- paste("The z-statistic of approximately", round(z_stat, 2),
+message2 <- paste("The z-statistic of approx.", round(z_stat, 2),
                   "suggests that the sample mean IQ is about", 
                   round(abs(z_stat), 2), "standard errors below", 
                   "the hypothesized population mean of 100.\n",
-                  "The p-value of approximately", round(p_value, 2),
+                  "The p-value of approx.", round(p_value, 2),
                   "is relatively high.", 
-                  "It means under the null hypothesis, there is a", 
+                  "This means under the null hypothesis, there is a", 
                   round(p_value * 100, 2), "% chance", 
-                  "of observing a sample mean IQ as low as this (or lower)",
-                  "just by random sampling variability.")
+                  "of observing a sample mean IQ as low as this, or lower,",
+                  "just from random sampling variability.")
 
 cat(message2)
 
@@ -130,7 +141,7 @@ str(expenditure)
 
 levels(expenditure)
 
-# Please plot the relationships among Y, X1, X2, and X3 ? 
+# Plotting the relationships among Y, X1, X2, and X3 
 # What are the correlations among them?
 
 # Scatterplot 1 - Y v. X1
@@ -150,24 +161,17 @@ plot2
 # Scatterplot 3 - Y v. X3
 plot3 <- ggplot(expenditure, aes(x = X3, y = Y, color = factor(Region))) +
   geom_point() +
-  labs(title = "Y vs. X3", x = "Urban Residents per 1,000", y = "Per Capita Expenditure on Shelters/Housing Assistance") +
+  labs(title = "Urban Resident per 1,000 v. Per Capita Spend on Shelters / Housing", x = "Urban Residents per 1,000", y = "Per Capita Expenditure on Shelters/Housing Assistance") +
   theme_classic()
 plot3
 
 
-
-# Scatterplot matrix
+# Correlation matrix
 cor_matrix <- round(cor(expenditure[, c("Y", "X1", "X2", "X3")]), 2)
-
 cor_matrix
 
 
-# Box plot for Y (Per Capita Expenditure on Shelters/Housing Assistance) by Region
-
-
-
-
-# Creating box plot for Y (Per Capita Expenditure on Shelters/Housing Assistance) by Region
+# Creating box plot for Per Capita Expenditure on Shelters/Housing Assistance by Region
 
 # Defining region labels
 region_labels <- c("Northeast", "North Central", "South", "West")
@@ -182,16 +186,7 @@ ggplot(expenditure, aes(x = as.factor(Region), y = Y, fill = as.factor(Region)))
 
 
 
-# Creating box plot for X1 (Per Capita Personal Income) by Region
-ggplot(expenditure, aes(x = as.factor(Region), y = X1, fill = as.factor(Region))) +
-  geom_boxplot() +
-  labs(title = "Per Capita Personal Income by Region", 
-       x = "Region", 
-       y = "Per Capita Personal Income (X1)") +
-  scale_x_discrete(labels = region_labels) +
-  theme_classic()
-
-# Creating Box plot for X2 (Financially Insecure Residents per 100,000) by Region
+# Creating Box plot for Financially Insecure Residents per 100,000 by Region
 ggplot(expenditure, aes(x = as.factor(Region), y = X2, fill = as.factor(Region))) +
   geom_boxplot() +
   labs(title = "Financially Insecure Residents per 100,000 by Region", 
@@ -200,7 +195,7 @@ ggplot(expenditure, aes(x = as.factor(Region), y = X2, fill = as.factor(Region))
   scale_x_discrete(labels = region_labels) +
   theme_classic()
 
-# Box plot for X3 (No. of People per Thousand Residing in Urban Areas) by Region
+# Box plot for No. of People per Thousand Residing in Urban Areas by Region
 ggplot(expenditure, aes(x = as.factor(Region), y = X3, fill = as.factor(Region))) +
   geom_boxplot() +
   labs(title = "No. of People per Thousand Residing in Urban Areas by Region", 
@@ -209,20 +204,11 @@ ggplot(expenditure, aes(x = as.factor(Region), y = X3, fill = as.factor(Region))
   scale_x_discrete(labels = region_labels) +
   theme_classic()
 
-# Relationship between Y (per capita expenditure on shelters/housing assistance per state) & Region? 
+# Explopring relationship between Y (per capita expenditure on shelters/housing assistance per state) & Region. 
 # On average, which region has the highest per capita expenditure on housing assistance?
 
 
 # Calculating the mean expenditure by region
-# mean_expenditure_by_region <- expenditure %>%
-  group_by(Region) %>%
-  summarize(Mean_Expenditure = mean(Y))
-
-# Printing
-# print(mean_expenditure_by_region)
-
-
-# Calculate the mean expenditure by region 
 mean_expenditure_by_region <- expenditure %>%
   mutate(Region_Name = case_when(
     Region == 1 ~ "Northeast",
@@ -236,52 +222,28 @@ mean_expenditure_by_region <- expenditure %>%
 # Renaming columns 
 colnames(mean_expenditure_by_region) <- c("Region", "Per Capita Mean Expenditure")
 
-# Print 
+# Printing 
 print(mean_expenditure_by_region)
 
 
-# Load required libraries if not already loaded
-library(ggplot2)
 
 # Creating a bar plot for mean expenditure by region
 ggplot(mean_expenditure_by_region, aes(x = Region, y = `Per Capita Mean Expenditure`, fill = Region)) +
   geom_bar(stat = "identity") +
-  geom_text(aes(label = round(`Per Capita Mean Expenditure`, 1)), vjust = -0.5, size = 3) +  # Add labels for bar values
+  geom_text(aes(label = round(`Per Capita Mean Expenditure`, 1)), vjust = -0.5, size = 3) +  
   labs(title = "Average Per Capita Expenditure on Shelters/Housing Assistance by Region",
        x = "Region",
        y = "Average Per Capita Expenditure") +
-  scale_x_discrete(labels = mean_expenditure_by_region$Region) +  # Set custom x-axis labels
+  scale_x_discrete(labels = mean_expenditure_by_region$Region) + 
   theme_classic()
 
 
 
-# Creating a bar plot with labels for bar values
-ggplot(mean_expenditure_by_region, aes(x = `Region`, y = `Mean Expenditure`, fill = `Region`)) +
-  geom_bar(stat = "identity") +
-  geom_text(aes(label = round(`Mean Expenditure`, 2)), vjust = -0.5, size = 3) +  # Add labels for bar values
-  labs(title = "Average Per Capita Expenditure on Shelters/Housing Assistance by Region", 
-       x = "Region", 
-       y = "Average Per Capita Expenditure") +
-  theme_classic()
 
-# Load required libraries if not already loaded
-library(ggplot2)
-
-# Create a bar plot
-ggplot(mean_expenditure_by_region, aes(x = `Region Name`, y = `Mean Expenditure`, fill = `Region Name`)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Average Per Capita Expenditure on Shelters/Housing Assistance by Region", 
-       x = "Region", 
-       y = "Average Per Capita Expenditure") +
-  theme_classic()
-
-
-
-# Plotting the relationship between Y and X1 
-
-# Creating a scatterplot of Y v. X1
+# Creating a scatterplot of Y v. X1 
 ggplot(expenditure, aes(x = X1, y = Y)) +
   geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  
   labs(title = "Relationship between Per Capita Expenditure and Per Capita Personal Income",
        x = "Per Capita Personal Income (X1)",
        y = "Per Capita Expenditure (Y)") +
@@ -289,7 +251,7 @@ ggplot(expenditure, aes(x = X1, y = Y)) +
 
 
 
-# Creating a scatterplot of Y vs. X1 with different symbols and colors for regions
+# Creating a scatterplot of Y vs. X1 - with different symbols and colors for regions
 ggplot(expenditure, aes(x = X1, y = Y, color = factor(Region), shape = factor(Region))) +
   geom_point(size = 3) +
   labs(title = "Relationship between Per Capita Expenditure, Per Capita Personal Income & Region",
@@ -302,11 +264,6 @@ ggplot(expenditure, aes(x = X1, y = Y, color = factor(Region), shape = factor(Re
   scale_shape_manual(values = c(19, 17, 15, 5), 
                      labels = c("Northeast", "North Central", "South", "West")) +  
   theme_classic()
-
-
-
-
-
 
 
 
