@@ -25,7 +25,7 @@ pkgTest <- function(pkg){
 
 # here is where you load any necessary packages
 # ex: stringr
-# lapply(c("stringr"),  pkgTest)
+lapply(c("stringr"),  pkgTest)
 
 library(ggplot2)
 lapply(c(),  pkgTest)
